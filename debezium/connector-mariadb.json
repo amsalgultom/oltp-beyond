@@ -11,7 +11,7 @@
     "database.server.id": "${DEBEZIUM_SERVER_ID}",
     "database.ssl.mode": "disable",
 
-    "topic.prefix": "dbz.prod_5_smg_mirror_ad",
+    "topic.prefix": "dbz",
     "database.include.list": "prod_5_smg_mirror_ad",
 
     "table.include.list": "prod_5_smg_mirror_ad.tblAgentLoginStatus,prod_5_smg_mirror_ad.tblCallDataRecords,prod_5_smg_mirror_ad.tblCollectionResult,prod_5_smg_mirror_ad.tblCollections,prod_5_smg_mirror_ad.tblCollectionTask,prod_5_smg_mirror_ad.tblCustomerId,prod_5_smg_mirror_ad.tblUserLogs,prod_5_smg_mirror_ad.tblUserReleases",
@@ -19,7 +19,7 @@
     "schema.history.internal.kafka.bootstrap.servers": "${KAFKA_BOOTSTRAP}",
     "schema.history.internal.kafka.topic": "${SCHEMA_HISTORY_TOPIC}",
 
-    "snapshot.mode": "initial_only",
+    "snapshot.mode": "initial",
     "snapshot.locking.mode": "minimal",
 
     "decimal.handling.mode": "double",
