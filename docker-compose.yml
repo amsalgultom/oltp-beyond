@@ -1,18 +1,65 @@
 services:
 
   # ─────────────────────────────────────────────────────────────────────────────
+  #  Zookeeper (koordinator Kafka)
+  # ─────────────────────────────────────────────────────────────────────────────
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: cdc-zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_INIT_LIMIT: 5
+    networks:
+      - cdc-net
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  #  Kafka Broker (lokal untuk dev/test)
+  # ─────────────────────────────────────────────────────────────────────────────
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: cdc-kafka
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "19092:19092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:19092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server=localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - cdc-net
+
+  # ─────────────────────────────────────────────────────────────────────────────
   #  Kafka Connect + Debezium 3.5
-  #  Konek ke Kafka EXISTING (KAFKA_BOOTSTRAP) dan MariaDB EXISTING (MARIADB_HOST)
+  #  Konek ke Kafka DOCKER (kafka:9092) dan MariaDB EXISTING (MARIADB_HOST)
   # ─────────────────────────────────────────────────────────────────────────────
   connect:
     image: debezium/connect:3.5.2.Final
     container_name: cdc-connect
     restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
     ports:
       - "8083:8083"
     environment:
-      # ── Kafka broker existing ──────────────────────────────────────────────
-      BOOTSTRAP_SERVERS: "${KAFKA_BOOTSTRAP}"
+      # ── Kafka broker lokal atau existing ───────────────────────────────────
+      BOOTSTRAP_SERVERS: "${KAFKA_BOOTSTRAP:-kafka:9092}"
 
       # ── Identitas worker Connect (topik internal UNIK agar tidak bentrok) ──
       GROUP_ID: "${CONNECT_GROUP_ID:-connect-collection}"
@@ -146,6 +193,7 @@ volumes:
   clickhouse-data:
   clickhouse-logs:
   mariadb-dev-data:
+  kafka-data:
 
 networks:
   cdc-net:
