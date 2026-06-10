@@ -1,0 +1,152 @@
+services:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  #  Kafka Connect + Debezium 3.5
+  #  Konek ke Kafka EXISTING (KAFKA_BOOTSTRAP) dan MariaDB EXISTING (MARIADB_HOST)
+  # ─────────────────────────────────────────────────────────────────────────────
+  connect:
+    image: debezium/connect:3.5.2.Final
+    container_name: cdc-connect
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+    environment:
+      # ── Kafka broker existing ──────────────────────────────────────────────
+      BOOTSTRAP_SERVERS: "${KAFKA_BOOTSTRAP}"
+
+      # ── Identitas worker Connect (topik internal UNIK agar tidak bentrok) ──
+      GROUP_ID: "${CONNECT_GROUP_ID:-connect-collection}"
+      CONFIG_STORAGE_TOPIC: "${CONNECT_CONFIG_TOPIC:-connect-configs-collection}"
+      OFFSET_STORAGE_TOPIC: "${CONNECT_OFFSET_TOPIC:-connect-offsets-collection}"
+      STATUS_STORAGE_TOPIC: "${CONNECT_STATUS_TOPIC:-connect-status-collection}"
+
+      # ── Replikasi topik internal (sesuaikan dgn jumlah broker) ─────────────
+      CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+      OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+      STATUS_STORAGE_REPLICATION_FACTOR: "1"
+
+      # ── Converter default (JSON, schema dinonaktifkan — SMT unwrap) ────────
+      KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+
+      # ── Heap size (sesuaikan dgn RAM server) ─────────────────────────────
+      HEAP_OPTS: "-Xms512m -Xmx1g"
+
+      # ── Expose variabel .env ke dalam container agar register.sh bisa pakai
+      MARIADB_HOST: "${MARIADB_HOST}"
+      MARIADB_PORT: "${MARIADB_PORT:-3306}"
+      DEBEZIUM_DB_USER: "${DEBEZIUM_DB_USER:-debezium}"
+      DEBEZIUM_DB_PASSWORD: "${DEBEZIUM_DB_PASSWORD}"
+      DEBEZIUM_SERVER_ID: "${DEBEZIUM_SERVER_ID:-184}"
+      SCHEMA_HISTORY_TOPIC: "${SCHEMA_HISTORY_TOPIC:-dbz.schema-history.collection}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8083/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    networks:
+      - cdc-net
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  #  ClickHouse 25.8 LTS
+  # ─────────────────────────────────────────────────────────────────────────────
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.8
+    container_name: cdc-clickhouse
+    restart: unless-stopped
+    ports:
+      - "8123:8123"   # HTTP interface (untuk Next.js & klien lain)
+      - "9000:9000"   # Native TCP (opsional)
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+      - clickhouse-logs:/var/log/clickhouse-server
+      - ./clickhouse/config:/etc/clickhouse-server/config.d:ro
+    environment:
+      CLICKHOUSE_DB: "${CLICKHOUSE_DATABASE:-collection}"
+      CLICKHOUSE_USER: "${CLICKHOUSE_ADMIN_USER:-default}"
+      CLICKHOUSE_PASSWORD: "${CLICKHOUSE_ADMIN_PASSWORD}"
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8123/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks:
+      - cdc-net
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  #  Next.js 15 Dashboard
+  # ─────────────────────────────────────────────────────────────────────────────
+  nextjs:
+    build:
+      context: ./nextjs
+      dockerfile: Dockerfile
+      target: runner
+    container_name: cdc-nextjs
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Server-side only — tidak pernah dikirim ke browser
+      CLICKHOUSE_URL: "http://clickhouse:8123"
+      CLICKHOUSE_USER: "${CLICKHOUSE_READONLY_USER:-ch_readonly}"
+      CLICKHOUSE_PASSWORD: "${CLICKHOUSE_READONLY_PASSWORD}"
+      NEXT_PUBLIC_APP_TITLE: "${NEXT_PUBLIC_APP_TITLE:-Collection Analytics}"
+      NODE_ENV: production
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+    networks:
+      - cdc-net
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  #  MariaDB stand-in (HANYA untuk dev/test lokal)
+  #  Aktifkan dengan: docker compose --profile dev up
+  #  JANGAN jalankan di production — arahkan ke MARIADB_HOST existing.
+  # ─────────────────────────────────────────────────────────────────────────────
+  mariadb-dev:
+    image: mariadb:10.6
+    container_name: cdc-mariadb-dev
+    profiles: ["dev"]
+    restart: unless-stopped
+    ports:
+      - "3307:3306"   # port berbeda agar tidak bentrok dengan MariaDB lokal
+    environment:
+      MARIADB_ROOT_PASSWORD: "${DEV_MARIADB_ROOT_PASSWORD:-devroot}"
+      MARIADB_DATABASE: "${DEV_MARIADB_DATABASE:-prod_5_smg_mirror_ad}"
+    command: >
+      --server-id=1
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --binlog-row-image=FULL
+      --expire-logs-days=3
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mariadb-dev-data:/var/lib/mysql
+      - ./source/table.sql:/docker-entrypoint-initdb.d/01_table.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - cdc-net
+
+volumes:
+  clickhouse-data:
+  clickhouse-logs:
+  mariadb-dev-data:
+
+networks:
+  cdc-net:
+    driver: bridge

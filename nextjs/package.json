@@ -1,0 +1,28 @@
+{
+  "name": "collection-analytics-dashboard",
+  "version": "1.0.0",
+  "description": "Real-time analytics dashboard for collection pipeline",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "15.1.3",
+    "react": "^19.0.0-rc-66",
+    "react-dom": "^19.0.0-rc-66",
+    "@clickhouse/client": "^0.2.8",
+    "recharts": "^2.10.0",
+    "axios": "^1.6.0",
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "15.1.3"
+  }
+}

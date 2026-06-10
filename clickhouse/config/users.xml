@@ -1,0 +1,7 @@
+<!-- ClickHouse user config — dioverride via env var CLICKHOUSE_USER/PASSWORD di docker-compose -->
+<!-- User ch_readonly dibuat via 08_users.sql setelah container pertama kali jalan -->
+<clickhouse>
+    <users>
+        <!-- default user dikendalikan via CLICKHOUSE_USER/PASSWORD env var di compose -->
+    </users>
+</clickhouse>
