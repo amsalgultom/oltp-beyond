@@ -35,7 +35,7 @@ SELECT
     sumState(total_ptp)                         AS ptp_achieved,
     sumState(talk_time_sec)                     AS talk_time_seconds,
     sumState(cast(0 as Float64))                AS ptp_amount  -- ClickHouse SDK bisa join dgn collection_result
-FROM user_releases FINAL
+FROM user_releases
 WHERE _is_deleted = 0 AND status = 'CLOSED'
 GROUP BY work_date, agent_username, branch_code;
 
@@ -63,7 +63,7 @@ SELECT
     sumState(duration)                          AS total_duration,
     sumState(billsec)                           AS total_billsec,
     kode_cabang                                 AS branch_code
-FROM cdr FINAL
+FROM cdr
 WHERE _is_deleted = 0
 GROUP BY minute, branch_code;
 
@@ -89,7 +89,7 @@ SELECT
     countState()                                AS count,
     sumState(ptp_amount)                        AS ptp_total_amount,
     kode_cabang                                 AS branch_code
-FROM collection_result FINAL
+FROM collection_result
 WHERE _is_deleted = 0
 GROUP BY event_date, classification, branch_code;
 
@@ -115,7 +115,7 @@ SELECT
     countState()                                AS count,
     avgIfState(toFloat32(billsec), disposition = 'ANSWERED') AS avg_talk_sec,
     kode_cabang                                 AS branch_code
-FROM cdr FINAL
+FROM cdr
 WHERE _is_deleted = 0
 GROUP BY count_date, disposition, branch_code;
 

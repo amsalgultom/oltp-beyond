@@ -15,7 +15,7 @@ SELECT
     login_time,
     extension,
     ip_address,
-    now() - toDateTime64(toDate(login_date) * 86400 + login_time / 1000.0, 3) AS session_duration
+    now() - toDateTime64(cast(login_date as UInt32) * 86400 + login_time / 1000.0, 3) AS session_duration
 FROM agent_login_status FINAL
 WHERE _is_deleted = 0;
 

@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS agent_login_status_queue
     `timestamp` Nullable(Int32),
     extension   Nullable(String),
     ipAddress   Nullable(String),
-    __op        LowCardinality(String)          DEFAULT '',
+    __op        LowCardinality(String),
     __ts_ms     Int64,
-    __source_ts_ms Int64                        DEFAULT 0,
+    __source_ts_ms Int64,
     __deleted   LowCardinality(String)          )
 ENGINE = Kafka
 SETTINGS
