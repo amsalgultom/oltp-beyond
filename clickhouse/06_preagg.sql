@@ -158,7 +158,7 @@ SELECT
     count_date,
     disposition,
     countMerge(count)      AS total,
-    avgMerge(avg_talk_sec) AS avg_talk_seconds,
+    round(sum(avg_talk_sec) / nullIf(countMerge(count), 0), 2) AS avg_talk_seconds,
     branch_code
 FROM agg_disposition_summary
 GROUP BY count_date, disposition, branch_code
