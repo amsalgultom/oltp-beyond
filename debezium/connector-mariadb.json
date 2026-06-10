@@ -9,7 +9,7 @@
     "database.user": "${DEBEZIUM_DB_USER}",
     "database.password": "${DEBEZIUM_DB_PASSWORD}",
     "database.server.id": "${DEBEZIUM_SERVER_ID}",
-    "database.ssl.mode": "disabled",
+    "database.ssl.mode": "disable",
 
     "topic.prefix": "dbz.prod_5_smg_mirror_ad",
     "database.include.list": "prod_5_smg_mirror_ad",
@@ -19,7 +19,7 @@
     "schema.history.internal.kafka.bootstrap.servers": "${KAFKA_BOOTSTRAP}",
     "schema.history.internal.kafka.topic": "${SCHEMA_HISTORY_TOPIC}",
 
-    "snapshot.mode": "schema_only",
+    "snapshot.mode": "initial_only",
     "snapshot.locking.mode": "minimal",
 
     "decimal.handling.mode": "double",
