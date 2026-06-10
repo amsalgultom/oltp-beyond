@@ -17,16 +17,15 @@ USE collection;
 CREATE TABLE IF NOT EXISTS agent_login_status_queue
 (
     markedBy    String,
-    state       String                          DEFAULT '',
+    state       String,
     datestamp   Nullable(Int32),
     `timestamp` Nullable(Int32),
     extension   Nullable(String),
     ipAddress   Nullable(String),
     __op        LowCardinality(String)          DEFAULT '',
-    __ts_ms     Int64                           DEFAULT 0,
+    __ts_ms     Int64,
     __source_ts_ms Int64                        DEFAULT 0,
-    __deleted   LowCardinality(String)          DEFAULT 'false'
-)
+    __deleted   LowCardinality(String)          )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -65,8 +64,7 @@ CREATE TABLE IF NOT EXISTS cdr_queue
     __op            LowCardinality(String)      DEFAULT '',
     __ts_ms         Int64                       DEFAULT 0,
     __source_ts_ms  Int64                       DEFAULT 0,
-    __deleted       LowCardinality(String)      DEFAULT 'false'
-)
+    __deleted       LowCardinality(String)      )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -95,8 +93,7 @@ CREATE TABLE IF NOT EXISTS collection_result_queue
     __op                LowCardinality(String)  DEFAULT '',
     __ts_ms             Int64                   DEFAULT 0,
     __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  DEFAULT 'false'
-)
+    __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -127,8 +124,7 @@ CREATE TABLE IF NOT EXISTS collections_queue
     __op                LowCardinality(String)  DEFAULT '',
     __ts_ms             Int64                   DEFAULT 0,
     __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  DEFAULT 'false'
-)
+    __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -163,8 +159,7 @@ CREATE TABLE IF NOT EXISTS collection_task_queue
     __op                LowCardinality(String)  DEFAULT '',
     __ts_ms             Int64                   DEFAULT 0,
     __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  DEFAULT 'false'
-)
+    __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -196,8 +191,7 @@ CREATE TABLE IF NOT EXISTS customer_id_queue
     __op                LowCardinality(String)  DEFAULT '',
     __ts_ms             Int64                   DEFAULT 0,
     __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  DEFAULT 'false'
-)
+    __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -222,8 +216,7 @@ CREATE TABLE IF NOT EXISTS user_logs_queue
     __op            LowCardinality(String)      DEFAULT '',
     __ts_ms         Int64                       DEFAULT 0,
     __source_ts_ms  Int64                       DEFAULT 0,
-    __deleted       LowCardinality(String)      DEFAULT 'false'
-)
+    __deleted       LowCardinality(String)      )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -253,8 +246,7 @@ CREATE TABLE IF NOT EXISTS user_releases_queue
     __op                LowCardinality(String)  DEFAULT '',
     __ts_ms             Int64                   DEFAULT 0,
     __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  DEFAULT 'false'
-)
+    __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',

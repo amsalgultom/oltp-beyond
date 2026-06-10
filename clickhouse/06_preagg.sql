@@ -34,7 +34,7 @@ SELECT
     sumState(total_answered)                    AS calls_answered,
     sumState(total_ptp)                         AS ptp_achieved,
     sumState(talk_time_sec)                     AS talk_time_seconds,
-    sumState(0)                                 AS ptp_amount  -- ClickHouse SDK bisa join dgn collection_result
+    sumState(cast(0 as Float64))                AS ptp_amount  -- ClickHouse SDK bisa join dgn collection_result
 FROM user_releases FINAL
 WHERE _is_deleted = 0 AND status = 'CLOSED'
 GROUP BY work_date, agent_username, branch_code;
