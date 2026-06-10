@@ -46,7 +46,7 @@ WITH events AS (
     -- Step 5: Bayar / Lunas
     SELECT
         no_kontrak,
-        toDateTime64(toDate(payment_date) * 86400000, 3),
+        toDateTime64(payment_date, 3),
         5
     FROM customer_id FINAL
     WHERE _is_deleted = 0 AND is_paid = 1 AND payment_date >= toDate(now() - INTERVAL 7 DAY)

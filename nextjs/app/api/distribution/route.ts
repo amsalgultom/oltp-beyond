@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const talkDurationQuery = `
       SELECT
-        quantilesCont(0.5, 0.75, 0.9, 0.95, 0.99)(billsec) AS quantiles,
+        quantilesExact(0.5, 0.75, 0.9, 0.95, 0.99)(billsec) AS quantiles,
         round(avg(billsec), 1) AS mean_sec,
         max(billsec) AS max_sec,
         min(billsec) AS min_sec
