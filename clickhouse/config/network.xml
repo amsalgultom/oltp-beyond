@@ -1,4 +1,4 @@
-<!-- Mounting custom config.d menonaktifkan default --listen_host=0.0.0.0 milik image,
+<!-- Mounting custom config.d menonaktifkan default listen_host=0.0.0.0 milik image,
      sehingga ClickHouse hanya listen di 127.0.0.1 (unreachable dari container lain). -->
 <clickhouse>
     <listen_host>0.0.0.0</listen_host>
