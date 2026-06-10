@@ -23,8 +23,8 @@ export async function GET() {
     const metricsQuery = `
       SELECT
         count() as current_calls,
-        round(nanToZero(avg(connect_rate_pct)), 1) as connect_rate_pct,
-        round(nanToZero(avg(round(total_talk_sec / calls, 0))), 0) as avg_talk_sec,
+        round(ifNotFinite(avg(connect_rate_pct), 0), 1) as connect_rate_pct,
+        round(ifNotFinite(avg(round(total_talk_sec / calls, 0)), 0), 0) as avg_talk_sec,
         sum(calls) as calls_last_hour
       FROM vq_live_cdr_minute
       WHERE minute >= now() - INTERVAL 60 MINUTE
