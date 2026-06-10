@@ -13,8 +13,13 @@ export function getClickHouseClient() {
     throw new Error('Missing ClickHouse connection variables in env')
   }
 
+  const urlObj = new URL(url)
+  const host = urlObj.hostname || 'localhost'
+  const port = urlObj.port ? parseInt(urlObj.port) : 8123
+
   client = createClient({
-    url: url,
+    host: host,
+    port: port,
     username: user,
     password: password,
     database: 'collection',
