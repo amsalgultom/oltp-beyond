@@ -49,7 +49,7 @@ services:
   #  Konek ke Kafka DOCKER (kafka:9092) dan MariaDB EXISTING (MARIADB_HOST)
   # ─────────────────────────────────────────────────────────────────────────────
   connect:
-    image: debezium/connect:3.5.2.Final
+    image: quay.io/debezium/connect:3.5.2.Final
     container_name: cdc-connect
     restart: unless-stopped
     depends_on:
