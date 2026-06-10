@@ -79,7 +79,8 @@ init-clickhouse: ## Jalankan semua DDL ClickHouse (00–08)
 	@for f in clickhouse/0*.sql; do \
 	  echo "  Applying $$f..."; \
 	  sed "s|KAFKA_BOOTSTRAP_PLACEHOLDER|$(KAFKA_BOOTSTRAP)|g; \
-	       s|CLICKHOUSE_DATABASE_PLACEHOLDER|$(CLICKHOUSE_DATABASE)|g" "$$f" | \
+	       s|CLICKHOUSE_DATABASE_PLACEHOLDER|$(CLICKHOUSE_DATABASE)|g; \
+	       s|CLICKHOUSE_READONLY_PASSWORD_PLACEHOLDER|$(CLICKHOUSE_READONLY_PASSWORD)|g" "$$f" | \
 	  docker compose exec -T clickhouse clickhouse-client \
 	    --user "$(CLICKHOUSE_ADMIN_USER)" \
 	    --password "$(CLICKHOUSE_ADMIN_PASSWORD)" \

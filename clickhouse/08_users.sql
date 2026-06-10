@@ -14,8 +14,8 @@
 -- Password: dari env CLICKHOUSE_READONLY_PASSWORD (docker-compose)
 -- Hak: SELECT saja pada collection database
 
-CREATE USER IF NOT EXISTS ch_readonly
-  IDENTIFIED WITH plaintext_password BY 'dummy_placeholder'
+CREATE USER OR REPLACE ch_readonly
+  IDENTIFIED WITH plaintext_password BY 'CLICKHOUSE_READONLY_PASSWORD_PLACEHOLDER'
   SETTINGS
     max_rows_to_read = 1000000,
     max_execution_time = 60;
