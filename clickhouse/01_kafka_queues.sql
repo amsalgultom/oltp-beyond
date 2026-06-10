@@ -49,9 +49,7 @@ CREATE TABLE IF NOT EXISTS cdr_queue
     dstchannel      Nullable(String),
     lastapp         Nullable(String),
     lastdata        Nullable(String),
-    duration        Nullable(Int32)             DEFAULT 0,
-    billsec         Nullable(Int32)             DEFAULT 0,
-    disposition     Nullable(String),
+    duration        Nullable(Int32)                 billsec         Nullable(Int32)                 disposition     Nullable(String),
     amaflags        Nullable(Int32),
     accountcode     Nullable(String),
     uniqueidOri     Nullable(String),
@@ -61,10 +59,7 @@ CREATE TABLE IF NOT EXISTS cdr_queue
     phoneNumber     Nullable(String),
     username        Nullable(String),
     kodeCabang      Nullable(String),
-    __op            LowCardinality(String)      DEFAULT '',
-    __ts_ms         Int64                       DEFAULT 0,
-    __source_ts_ms  Int64                       DEFAULT 0,
-    __deleted       LowCardinality(String)      )
+    __op            LowCardinality(String)          __ts_ms         Int64                           __source_ts_ms  Int64                           __deleted       LowCardinality(String)      )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -90,10 +85,7 @@ CREATE TABLE IF NOT EXISTS collection_result_queue
     createdTimeStamp    Nullable(Int64),
     updatedTimeStamp    Nullable(Int64),
     kodeCabang          Nullable(String),
-    __op                LowCardinality(String)  DEFAULT '',
-    __ts_ms             Int64                   DEFAULT 0,
-    __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  )
+    __op                LowCardinality(String)      __ts_ms             Int64                       __source_ts_ms      Int64                       __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -121,10 +113,7 @@ CREATE TABLE IF NOT EXISTS collections_queue
     updatedTimeStamp    Nullable(Int64),
     kodeCabang          Nullable(String),
     overdue             Nullable(Int32),
-    __op                LowCardinality(String)  DEFAULT '',
-    __ts_ms             Int64                   DEFAULT 0,
-    __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  )
+    __op                LowCardinality(String)      __ts_ms             Int64                       __source_ts_ms      Int64                       __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -156,10 +145,7 @@ CREATE TABLE IF NOT EXISTS collection_task_queue
     kodeCabang          Nullable(String),
     createdTimestamp    Nullable(Int64),
     updatedTimestamp    Nullable(Int64),
-    __op                LowCardinality(String)  DEFAULT '',
-    __ts_ms             Int64                   DEFAULT 0,
-    __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  )
+    __op                LowCardinality(String)      __ts_ms             Int64                       __source_ts_ms      Int64                       __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -188,10 +174,7 @@ CREATE TABLE IF NOT EXISTS customer_id_queue
     kodeCabang          Nullable(String),
     createdTimestamp    Nullable(Int64),
     markedTimestamp     Nullable(Int64),
-    __op                LowCardinality(String)  DEFAULT '',
-    __ts_ms             Int64                   DEFAULT 0,
-    __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  )
+    __op                LowCardinality(String)      __ts_ms             Int64                       __source_ts_ms      Int64                       __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -213,10 +196,7 @@ CREATE TABLE IF NOT EXISTS user_logs_queue
     outTimeStamp    Nullable(Int64),
     duration        Nullable(Int32),
     kodeCabang      Nullable(String),
-    __op            LowCardinality(String)      DEFAULT '',
-    __ts_ms         Int64                       DEFAULT 0,
-    __source_ts_ms  Int64                       DEFAULT 0,
-    __deleted       LowCardinality(String)      )
+    __op            LowCardinality(String)          __ts_ms         Int64                           __source_ts_ms  Int64                           __deleted       LowCardinality(String)      )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -243,10 +223,7 @@ CREATE TABLE IF NOT EXISTS user_releases_queue
     kodeCabang          Nullable(String),
     createdTimestamp    Nullable(Int64),
     updatedTimestamp    Nullable(Int64),
-    __op                LowCardinality(String)  DEFAULT '',
-    __ts_ms             Int64                   DEFAULT 0,
-    __source_ts_ms      Int64                   DEFAULT 0,
-    __deleted           LowCardinality(String)  )
+    __op                LowCardinality(String)      __ts_ms             Int64                       __source_ts_ms      Int64                       __deleted           LowCardinality(String)  )
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',

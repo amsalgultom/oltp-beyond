@@ -126,7 +126,7 @@ CREATE OR REPLACE VIEW vq_live_cdr_minute AS
 SELECT
     minute,
     countMerge(total_calls)         AS calls,
-    countMergeMerge(answered_calls)  AS answered,
+    countMerge(answered_calls)  AS answered,
     round(100.0 * answered / nullIf(calls, 0), 1) AS connect_rate_pct,
     sumMerge(total_billsec)          AS total_talk_sec,
     branch_code

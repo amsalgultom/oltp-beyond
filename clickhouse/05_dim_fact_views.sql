@@ -38,8 +38,8 @@ SELECT
     coalesce(cr.classification, 'NO_RESULT')   AS result_classification,
     coalesce(cr.ptp_amount, 0)                 AS ptp_amount,
     coalesce(cr.ptp_date, NULL)                AS ptp_date
-FROM cdr FINAL cdr
-LEFT JOIN collection_result FINAL cr ON cr.call_id = cdr.uniqueid
+FROM cdr AS cdr
+LEFT JOIN collection_result AS cr ON cr.call_id = cdr.uniqueid
 WHERE cdr._is_deleted = 0 AND (cr._is_deleted = 0 OR cr._is_deleted IS NULL);
 
 -- ─── v_collection_task (task dengan aging bucket) ────────────────────────────
