@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     const query = `
       WITH asof_ts AS (
-        SELECT toUnixTimestamp64Milli(toDateTime(\`${asof} 23:59:59\`, 'UTC')) AS ts_ms
+        SELECT toUnixTimestamp64Milli(toDateTime64('${asof} 23:59:59', 3, 'UTC')) AS ts_ms
       ),
       state_asof AS (
         SELECT

@@ -54,7 +54,7 @@ export async function GET() {
       FROM (
         SELECT
           no_kontrak,
-          windowFunnel(604800)(ts, step = 1, step = 2, step = 3, step = 4, step = 5) AS level
+          windowFunnel(604800)(toDateTime(ts), step = 1, step = 2, step = 3, step = 4, step = 5) AS level
         FROM events
         GROUP BY no_kontrak
       )

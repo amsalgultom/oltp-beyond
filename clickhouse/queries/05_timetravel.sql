@@ -9,7 +9,7 @@
 
 -- Contoh: State antrian per 15 Mei 2026 pukul 23:59:59
 WITH asof_ts AS (
-    SELECT toUnixTimestamp64Milli(toDateTime('2026-05-15 23:59:59', 'UTC')) AS ts_ms
+    SELECT toUnixTimestamp64Milli(toDateTime64('2026-05-15 23:59:59', 3, 'UTC')) AS ts_ms
 ),
 state_asof AS (
     SELECT

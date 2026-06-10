@@ -61,7 +61,7 @@ FROM (
     SELECT
         no_kontrak,
         windowFunnel(604800)(   -- 7 hari = 604800 detik
-            ts,
+            toDateTime(ts),
             step = 1,
             step = 2,
             step = 3,
