@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS cdr_queue
     __ts_ms         Int64,
     __source_ts_ms  Int64,
     __deleted       LowCardinality(String)
+)
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -205,6 +206,7 @@ CREATE TABLE IF NOT EXISTS user_logs_queue
     __ts_ms         Int64,
     __source_ts_ms  Int64,
     __deleted       LowCardinality(String)
+)
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
