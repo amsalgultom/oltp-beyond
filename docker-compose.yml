@@ -146,6 +146,7 @@ services:
       CLICKHOUSE_URL: "http://clickhouse:8123"
       CLICKHOUSE_USER: "${CLICKHOUSE_READONLY_USER:-ch_readonly}"
       CLICKHOUSE_PASSWORD: "${CLICKHOUSE_READONLY_PASSWORD}"
+      CLICKHOUSE_DATABASE: "${CLICKHOUSE_DATABASE:-collection}"
       NEXT_PUBLIC_APP_TITLE: "${NEXT_PUBLIC_APP_TITLE:-Collection Analytics}"
       NODE_ENV: production
     depends_on:
