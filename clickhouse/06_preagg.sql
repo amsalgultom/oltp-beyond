@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS agg_disposition_summary
     count_date          Date,
     disposition         LowCardinality(String),
     count               AggregateFunction(count),
-    avg_talk_sec        AggregateFunction(avgIf, Float32, UInt8),
+    avg_talk_sec        AggregateFunction(avg, Float32),
     branch_code         LowCardinality(String)
 )
 ENGINE = AggregatingMergeTree
@@ -113,7 +113,7 @@ SELECT
     toDate(calldate)                            AS count_date,
     disposition                                 AS disposition,
     countState()                                AS count,
-    avgIfState(toFloat32(billsec), disposition = 'ANSWERED') AS avg_talk_sec,
+    avgState(toFloat32(billsec))                 AS avg_talk_sec,
     kode_cabang                                 AS branch_code
 FROM cdr
 WHERE _is_deleted = 0

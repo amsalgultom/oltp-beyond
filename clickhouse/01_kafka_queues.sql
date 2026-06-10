@@ -61,8 +61,10 @@ CREATE TABLE IF NOT EXISTS cdr_queue
     phoneNumber     Nullable(String),
     username        Nullable(String),
     kodeCabang      Nullable(String),
-    __op            LowCardinality(String)          __ts_ms         Int64,
-    __source_ts_ms  Int64                           __deleted       LowCardinality(String)      )
+    __op            LowCardinality(String),
+    __ts_ms         Int64,
+    __source_ts_ms  Int64,
+    __deleted       LowCardinality(String)
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
@@ -199,8 +201,10 @@ CREATE TABLE IF NOT EXISTS user_logs_queue
     outTimeStamp    Nullable(Int64),
     duration        Nullable(Int32),
     kodeCabang      Nullable(String),
-    __op            LowCardinality(String)          __ts_ms         Int64,
-    __source_ts_ms  Int64                           __deleted       LowCardinality(String)      )
+    __op            LowCardinality(String),
+    __ts_ms         Int64,
+    __source_ts_ms  Int64,
+    __deleted       LowCardinality(String)
 ENGINE = Kafka
 SETTINGS
     kafka_broker_list     = 'KAFKA_BOOTSTRAP_PLACEHOLDER',
