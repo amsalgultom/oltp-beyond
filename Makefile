@@ -159,6 +159,7 @@ verify: ## Smoke test end-to-end: connector running + data mengalir ke ClickHous
 	  --query "SELECT 'agent_login_status' t, count() n FROM agent_login_status FINAL WHERE _is_deleted=0 \
 	    UNION ALL SELECT 'cdr', count() FROM cdr FINAL WHERE _is_deleted=0 \
 	    UNION ALL SELECT 'collection_result', count() FROM collection_result FINAL WHERE _is_deleted=0 \
+	    UNION ALL SELECT 'collections', count() FROM collections FINAL WHERE _is_deleted=0 \
 	    UNION ALL SELECT 'collection_task', count() FROM collection_task FINAL WHERE _is_deleted=0 \
 	    UNION ALL SELECT 'customer_id', count() FROM customer_id FINAL WHERE _is_deleted=0 \
 	    UNION ALL SELECT 'user_logs', count() FROM user_logs FINAL WHERE _is_deleted=0 \
